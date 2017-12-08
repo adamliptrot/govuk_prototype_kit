@@ -61,6 +61,68 @@ router.get('/examples/over-18', function (req, res) {
   }
 })
 
+
+// Validation catch-all
+router.post('*', function(req, res, next) {
+  console.log(req.body)
+  if(req.body['errorData']){
+    // get the hidden inputs created for each required input
+    var errorData = req.body['errorData']
+    // if there is only one, make it into an array so we can json parse it
+    if(!Array.isArray(errorData)){
+      errorData = [errorData]
+    }
+    // for each of the required inputs perform the check
+    for(var re in errorData){
+      var checker = JSON.parse(errorData[re])
+      if(checker.condition == 'dependsOn'){
+        //check to see if the indicated input has been filled
+        //see if dependency is radio/checkbox
+        for(var i in req.body){
+          if(i == checker.dependsOn){
+            if(checker.dependsOnValue){
+                // make sure the dependency has the given value
+                if(req.body[i] == checker.dependsOnValue){
+                  req.checkBody(checker.input, checker.message).notEmpty()
+                }
+            }
+          }
+        }
+
+      }
+      if(checker.condition == 'notEmpty'){
+        req.checkBody(checker.input, checker.message).notEmpty()
+      }
+      if(checker.condition == 'isBoolean'){
+        req.checkBody(checker.input, checker.message).isBoolean()
+      }
+    }
+  }
+
+  var errors = req.validationErrors()
+  if (errors) {
+    var r = req.url
+    if(req.url == "/"){r = '/index.html'}
+    // pass the errors through to the page
+    res.render('./' + r, { errors: errors });
+    return;
+  } else {
+    //standard route from main routes file
+    if (req.body['next-page']) {
+      res.redirect(req.body['next-page']);
+    } else if (req.body){
+      for (var propName in req.body) {
+        if (req.body.hasOwnProperty(propName) ) {
+          eval("req.session." + propName + " = req.body." + propName);
+        }}
+          next();
+    } else {
+      next();
+    }
+  }
+})
+
+
 module.exports = router
 
 // Strip off markdown extensions if present and redirect

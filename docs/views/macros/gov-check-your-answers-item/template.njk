@@ -1,0 +1,16 @@
+<li>
+    <div class="cya-question">
+        <h2 class="bold">{{ question }}</h2>
+    </div>
+    <div class="cya-answer">
+        <p>{{ answer }}</p>
+    </div>
+    {% if change != null %}
+        <div class="cya-change">
+            {# passing a blank change param "" will allow a blank entry for the link in a list #}
+            {% if change.length > 0 %}            
+                <a href="{{ changeUrl }}"><span aria-hidden="true">{{ change }}</span><span class="visually-hidden">{{ changeScreenreader }}</span></a>            
+            {% endif %}
+        </div>
+    {% endif %}
+</li>

@@ -10,6 +10,7 @@ const express = require('express')
 const favicon = require('serve-favicon')
 const nunjucks = require('nunjucks')
 const session = require('express-session')
+const validator = require('express-validator')
 
 // Local dependencies
 const config = require('./app/config.js')
@@ -82,6 +83,9 @@ app.use('/public', express.static(path.join(__dirname, '/public')))
 app.use('/public', express.static(path.join(__dirname, '/govuk_modules/govuk_template/assets')))
 app.use('/public', express.static(path.join(__dirname, '/govuk_modules/govuk_frontend_toolkit')))
 app.use('/public/images/icons', express.static(path.join(__dirname, '/govuk_modules/govuk_frontend_toolkit/images')))
+
+// Validation
+app.use(validator())
 
 // Elements refers to icon folder instead of images folder
 app.use(favicon(path.join(__dirname, 'govuk_modules', 'govuk_template', 'assets', 'images', 'favicon.ico')))

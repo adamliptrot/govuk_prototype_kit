@@ -1,0 +1,41 @@
+{% if errors %}
+    {% set error = "" %}
+    {% for err in errors %}
+        {% if err.param == name %}
+            {% set error = err.msg %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% set valueSet = data[name] %}
+{% if value %}
+    {% set valueSet = value %}
+{% endif %}
+
+{% set setId = id %}
+{% if not id %}
+    {% set setId = "input-" + name %}
+{% endif %}
+
+{% set inputType = "text" %}
+{% if type %}
+    {% set inputType = type %}
+{% endif %}
+
+<div id="{{id}}-form" class="{% if classes.group %}{{ classes.group }} {% endif %}form-group{% if error %} form-group-error{% endif %}">
+    <label for="{{ setId }}">
+        <span class="{% if classes.label %}{{ classes.label }}{% else %}form-label-bold{% endif %}">{{ label }}</span>
+        {% if hint %}<span class="form-hint">{{hint}}</span>{% endif %}
+        {% if error %}<span class="error-message">{{error}}</span> {% endif %}
+    </label>
+            <input
+                class="form-control{% if error %} form-control-error{% endif %}{% if classes.input %} {{ classes.input }}{% endif %}"
+                id="{{ setId }}"
+                {% if maxlength %} maxlength="{{maxlength}}"{% endif %}
+                name="{{name}}"
+                type="{{inputType}}"
+                value="{{valueSet}}" />
+                {% for e in errorMessages %}
+                    <input type="hidden" name="errorData" value='{"input": "{{ name }}", "condition": "{{ e.condition }}", "message": "{{ e.message }}", "dependsOn": "{{ e.dependsOn }}", "dependsOnValue": "{{ e.dependsOnValue }}"}' />
+                {% endfor %}
+</div>

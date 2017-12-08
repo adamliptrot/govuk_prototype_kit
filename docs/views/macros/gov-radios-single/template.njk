@@ -1,0 +1,6 @@
+<div class="multiple-choice"{% if dataTarget %} data-target="{{dataTarget}}"{% endif %}>
+    <input id="{{id}}" type="radio" name="{{name}}" value="{{value}}{% if redirectIfSelected %}, redirect({{redirectIfSelected}}){% endif %}" {% if isSelected %} checked{% endif %}>
+    <label class="block-label" for="{{id}}">
+        {{label}}
+    </label>
+</div>

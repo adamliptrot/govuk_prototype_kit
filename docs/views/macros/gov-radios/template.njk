@@ -1,0 +1,39 @@
+{% set setId = id %}
+{% if not id %}
+    {% set id="input-" + name %}
+{% endif %}
+{% if errors %}
+    {% set error = "" %}
+    {% for err in errors %}
+        {% if err.param == name %}
+            {% set error = err.msg %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% set valueSet = data[name] %}
+{% if value %}
+    {% set valueSet = value %}
+{% endif %}
+
+<div class="form-group{% if error %} form-group-error{% endif %}">
+    <fieldset{% if classes.fieldset %} class="{{ classes.fieldset }}"{% endif %} id="{{id}}">
+       <legend>
+            <span class="bold-small{% if classes.legend %} {{ classes.legend }}{% endif %}">{{legend}}</span>
+            {% if error %}<span class="error-message">{{error}}</span> {% endif %}
+            {% if hint %}<span class="form-hint">{{hint}}</span>{% endif %}
+        </legend>
+
+        {% for radio in radioButtons %}
+          <div class="multiple-choice"{% if radio.dataTarget %} data-target="{{radio.dataTarget}}"{% endif %}>
+            <input id="{{id}}-{{radio.id}}" type="radio" name="{{name}}" value="{{radio.value}}{% if radio.redirectIfSelected %}, redirect({{radio.redirectIfSelected}}){% endif %}" {% if valueSet == radio.value %} checked{% endif %}>
+            <label for="{{id}}-{{radio.id}}">
+                {{radio.label}}
+            </label>
+            </div>
+        {% endfor %}
+        {% for e in errorMessages %}
+            <input type="hidden" name="errorData" value='{"input": "{{ name }}", "condition": "{{ e.condition }}", "message": "{{ e.message }}"}' />
+        {% endfor %}
+    </fieldset>
+</div>

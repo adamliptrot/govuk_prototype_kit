@@ -1,0 +1,89 @@
+{% if errors %}
+    {% set error = "" %}
+    {% set dayError = "" %}
+    {% set monthError = "" %}
+    {% set yearError = "" %}
+    {% for err in errors %}
+        {% if (err.param == name + ".day") or (err.param == name + ".month") or (err.param == name + ".year") %}
+            {% set error = err.msg %}
+        {% endif %}
+        {% if (err.param == name + ".day") %}
+            {% set dayError = err.msg %}
+        {% endif %}
+        {% if (err.param == name + ".month") %}
+            {% set monthError = err.msg %}
+        {% endif %}
+        {% if (err.param == name + ".year") %}
+            {% set yearError = err.msg %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% set setId = id %}
+{% if not id %}
+    {% set id="input-" + name %}
+{% endif %}
+
+{% set valueSetDay = data[name + ".day"] %}
+{% if value.day %}
+    {% set valueSetDay = value.day %}
+{% endif %}
+
+{% set valueSetMonth = data[name + ".month"] %}
+{% if value.month %}
+    {% set valueSetMonth = value.month %}
+{% endif %}
+
+{% set valueSetYear = data[name + ".year"] %}
+{% if value.year %}
+    {% set valueSetYear = value.year %}
+{% endif %}
+
+<div class="form-group{% if error or dayError or monthError or yearError %} form-group-error{% endif %}">
+    <fieldset id="{{id}}">
+        <legend>
+            <span class="form-label-bold" id="{{id}}-legend">{{ legend }}</span>
+            {% if hint %}<span class="form-hint">{{ hint }}</span>{% endif %}
+            {% if error %}<span class="error-message">{{ error }}</span>{% endif %}
+        </legend>
+        <div class="form-date">
+            <div class="form-group form-group-day">
+                <label for="{{id}}.day">Day</label>
+                <input class="form-control{% if dayError %} form-control-error{% endif %}"
+                        id="{{id}}.day"
+                        name="{{name}}.day"
+                        value="{{valueSetDay}}"
+                        type="number"
+                        min="0"
+                        max="31" />
+            </div>
+            
+            <div class="form-group form-group-month">
+                <label for="{{id}}.month">Month</label>
+                <input class="form-control{% if monthError %} form-control-error{% endif %}"
+                        id="{{id}}.month"
+                        name="{{name}}.month"
+                        value="{{valueSetMonth}}"
+                        type="number"
+                        min="0"
+                        max="31" />
+            </div>
+
+            <div class="form-group form-group-year">
+                <label for="{{id}}.year">Year</label>
+                <input class="form-control{% if yearError %} form-control-error{% endif %}"
+                        id="{{id}}.year"
+                        name="{{name}}.year"
+                        value="{{valueSetYear}}"
+                        type="number"
+                        min="0"
+                        {% if maxYear %}max="{{maxYear}}"{% endif %} />
+            </div>
+            {% for e in errorMessages %}
+            <input type="hidden" name="errorData" value='{"input": "{{ name }}.day", "condition": "notEmpty", "message": "{{ e.message }}"}' />
+            <input type="hidden" name="errorData" value='{"input": "{{ name }}.month", "condition": "notEmpty", "message": "{{ e.message }}"}' />
+            <input type="hidden" name="errorData" value='{"input": "{{ name }}.year", "condition": "notEmpty", "message": "{{ e.message }}"}' />
+            {% endfor %}
+        </div>
+    </fieldset>
+</div>

@@ -1,0 +1,57 @@
+{% from 'macros/gov-input/macro.njk' import govInput with context %}
+
+{{ govInput(
+    name=addr1.name,
+    id=addr1.id,      
+    label=addr1.label,
+    classes={input: 'form-control-3-4'},
+    errorMessages = [
+     {condition: 'notEmpty', message: messages__error__addr1}
+    ]
+)}}
+
+{{ govInput(
+    name=addr2.name,
+    id=addr2.id,      
+    label=addr2.label,
+    classes={input: 'form-control-3-4'},
+   errorMessages = [
+    {condition: 'notEmpty', message: messages__error__addr2}
+   ]
+)}}
+
+{{ govInput(
+    name=addr3.name,
+    id=addr3.id,      
+    label=addr3.label
+)}}
+
+{{ govInput(
+    name=addr4.name,
+    id=addr4.id,      
+    label=addr4.label
+)}}
+
+{{ govInput(
+    name=postcode.name,
+    id=postcode.id,      
+    label=postcode.label,
+    classes={input: 'form-control-1-4'},
+  errorMessages = [
+   {condition: 'notEmpty', message: messages__error__postcode}
+  ]
+)}}    
+
+
+
+  {{ govSelect(
+    name = country.name, 
+    id = country.id, 
+    label = country.label, 
+    errorMessages = [
+            {condition: 'notEmpty', message: messages__error__country}
+    ],
+    placeholder = "[Pick an option]", 
+    options = countries, 
+    classes = {formGroup: "autocomplete-wrapper"}
+) }}

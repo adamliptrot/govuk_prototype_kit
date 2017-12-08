@@ -1,0 +1,5 @@
+{% if hiddenCopy %}
+    <a href="{{ href }}" {% if isButton %}role="button" class="button{% if classes %} {{ classes }}{% endif %}"{% endif %}><span aria-hidden="true">{{ copy }}</span><span class="visually-hidden">{{ hiddenCopy }}</span></a>
+{% else %}
+    <a href="{{ href }}" {% if isButton %}role="button" class="button{% if classes %} {{ classes }}{% endif %}"{% endif %}>{{ copy }}</a>
+{% endif %}

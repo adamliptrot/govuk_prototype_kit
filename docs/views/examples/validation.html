@@ -1,0 +1,34 @@
+{% extends "layouts/base.html" %}
+
+{% block page_title %}
+  GOV.UK prototype kit
+{% endblock %}
+
+{% block content %}
+
+<main id="content" role="main">
+  <div class="grid-row">
+    <div class="column-two-thirds">
+
+      <h1 class="heading-xlarge">
+        Validation test
+      </h1>
+
+      <form method="post">
+        {{ govInput(
+          name='name',
+          id='name',
+          label="Name",
+          errorMessages = [
+              {condition: 'notEmpty', message: "Enter a name"}
+          ]
+         )}}
+
+         {{ govButton("Continue", "validation-success") }}
+      </form>
+
+    </div>
+  </div>
+</main>
+
+{% endblock %}
